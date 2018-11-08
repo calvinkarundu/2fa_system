@@ -1,0 +1,16 @@
+{
+    "name": "2fa-system",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "start": "PORT=3000 node ./app.js"
+    },
+    "dependencies": {
+        "africastalking": "^0.3.2",
+        "express": "~4.16.0",
+        "express-session": "^1.15.6",
+        "hbs": "~4.0.1",
+        "http-errors": "~1.6.2",
+        "morgan": "~1.9.0"
+    }
+}
