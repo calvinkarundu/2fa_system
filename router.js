@@ -1,20 +1,20 @@
-var AfricasTalking = require('africastalking');
-var express = require('express');
-var router = express.Router();
+const AfricasTalking = require('africastalking');
+const express = require('express');
+const router = express.Router();
 
-var africasTalking = new AfricasTalking({
+const africasTalking = new AfricasTalking({
     username: 'sandbox',
     apiKey: '19dc6df2e876b11472df5bd9733bc836586afaba103cb182dda84cabfc60f437',
 });
 
-var sms = africasTalking.SMS;
+const sms = africasTalking.SMS;
 
-var CONFIG_USERNAME = 'user1';
-var CONFIG_PASSWORD = 'pass1';
-var CONFIG_VERIFICATION_CODE = '';
-var CONFIG_PHONE_NUMBER = '+254724402159';
+const CONFIG_USERNAME = 'user1';
+const CONFIG_PASSWORD = 'pass1';
+const CONFIG_VERIFICATION_CODE = '';
+const CONFIG_PHONE_NUMBER = '+254724402159';
 
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
     if (req.session.loggedIn === true) {
         res.render('index', {
             title: 'Home | Africa\'s Talking 2FA',
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
     }
 });
 
-router.get('/login', function(req, res, next) {
+router.get('/login', (req, res, next) => {
     if (req.session.loggedIn === true) {
         res.redirect('/');
     } else {
@@ -36,9 +36,9 @@ router.get('/login', function(req, res, next) {
     }
 });
 
-router.post('/login', function(req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
+router.post('/login', (req, res, next) => {
+    const username = req.body.username;
+    const password = req.body.password;
 
     if (username === CONFIG_USERNAME && password === CONFIG_PASSWORD) {
         req.session.sendVerificationCode = true;
@@ -49,28 +49,28 @@ router.post('/login', function(req, res, next) {
     }
 });
 
-function sendVerificationCode() {
-    var randomNumber = Math.floor(1000 + Math.random() * 9000);
+const sendVerificationCode = () => {
+    let randomNumber = Math.floor(1000 + Math.random() * 9000);
     CONFIG_VERIFICATION_CODE = 'VC-' + randomNumber;
 
-    var message = 'Your login verification code is: ' + CONFIG_VERIFICATION_CODE;
+    let message = 'Your login verification code is: ' + CONFIG_VERIFICATION_CODE;
 
     console.log('Sending message...');
     sms.send({
         to: CONFIG_PHONE_NUMBER,
         message: message,
     })
-    .then(function(response) {
+    .then(response => {
         console.log('Message Sent!');
         console.log(response);
     })
-    .catch(function(error) {
+    .catch(error => {
         console.log('Message Failed!');
         console.log(error);
     });
 }
 
-router.get('/verify', function(req, res, next) {
+router.get('/verify', (req, res, next) => {
     if (req.session.loggedIn === true) {
         res.redirect('/');
     } else {
@@ -84,8 +84,8 @@ router.get('/verify', function(req, res, next) {
     }
 });
 
-router.post('/verify', function(req, res, next) {
-    var code = req.body.code;
+router.post('/verify', (req, res, next) => {
+    let code = req.body.code;
 
     if (code === CONFIG_VERIFICATION_CODE) {
         req.session.loggedIn = true;
@@ -101,7 +101,7 @@ router.post('/verify', function(req, res, next) {
     }
 });
 
-router.post('/logout', function(req, res, next) {
+router.post('/logout', (req, res, next) => {
     delete req.session.loggedIn;
     res.redirect('/');
 });
