@@ -1,15 +1,15 @@
-var http = require('http');
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var session = require('express-session');
-var logger = require('morgan');
+const http = require('http');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const session = require('express-session');
+const logger = require('morgan');
 
-var router = require('./router');
+const router = require('./router');
 
-var app = express();
+const app = express();
 
-var port = process.env.PORT;
+const port = process.env.PORT;
 
 app.set('port', port);
 
@@ -29,12 +29,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(router);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
     next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -45,7 +45,7 @@ app.use(function(err, req, res, next) {
 });
 
 // Start the server
-var server = http.createServer(app);
+const server = http.createServer(app);
 server.listen(port);
 server.on('listening', function() {
     console.log('Listening on ' + port);
